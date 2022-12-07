@@ -9,95 +9,78 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.HashMap;
 
 public class DayOne_PartTwo {
-
+	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+
 		Path inputPath = Paths.get("%directory%");
 		List<Integer> list = new ArrayList<>();
 		List<Integer> max = new ArrayList<>(Arrays.asList(0, 0, 0));
 		int total = 0;
-		
 		int i = 0;
 		HashMap<Integer, Integer> elves = new HashMap<Integer, Integer>();
 		
-		//int newVal = 0;
 		int initialVal = 0;
 		try {
 			BufferedReader reader = Files.newBufferedReader(inputPath);
 			String line = reader.readLine();
 			
 			while (line != null) {
+
+				i += 1;
 				
-				if (line.isEmpty()) {
-					i += 1;
+				//TODO: last number in input is not being read because there is no newline
+				// line.isEmpty does not ammend
+				// line != null does not ammend either because line no longer exists at last iteration of while loop?
+				
+				if (line.isBlank()) {
+					
 					System.out.println("empty line");
 					
 					// for list of values in list, sum together and save to initialVal
 					for (int listVal : list)
 						initialVal += listVal;
 					
-					
-					// set total val from elf to hashmap
+					// set total set of vals from elf to hashmap
 					elves.put(i, initialVal);
 					
-					// set previous val to initial val
-					// new val set as 0 when program starts
-//					newVal = initialVal;
-//					
-//					// if new sum of vals from list is greater than current max, max val is now newVal
-//					if (newVal > max) {
-//						max = newVal;
-//					}
-					
+					// clear list of vals
 					list.clear();
 					initialVal = 0;
 				}
 				else {
-					System.out.println(line);
 					list.add(Integer.valueOf(line));
 				}
 				// read next line
 				line = reader.readLine();
 			}
-
+			// while loop finished, add up last map
+			// not sure how to fix this java i/o issue currently
+			System.out.println("last value in file");
+			for (int listVal : list)
+				initialVal += listVal;
+			
+			// set total val from elf to hashmap
+			elves.put(i, initialVal);
+			
+			// clear list of vals
+			list.clear();
+			initialVal = 0;
+			// close file
 			reader.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
-		System.out.println(max);
-		
-		 int maxValueInMap = (Collections.max(elves.values()));
-		 
-	        // Iterate through HashMap
-	        for (Entry<Integer, Integer> entry :
-	             elves.entrySet()) {
-	 
-	            if (entry.getValue() == maxValueInMap) {
-	 
-	                // Print the key with max value
-	                System.out.println(entry.getKey());
-	                System.out.println(entry.getValue());
-	            }
-	        }
-		
 		
 		System.out.println("Top three elves with max calories are: ");
 		// determine top three elves 
-		// if val at i is greater than one or all elements in max, add to max
+		// if val from key is greater than one or all elements in max[j], add to max
 		elves.forEach((key, value) -> {		
 			for(int j = 0; j < max.size(); j++) {
-				if (value == 66575) {
-					System.out.println("key is");
-				}
 				
 				if (value > max.get(j)) {
-					//System.out.println(value);
 					max.set(j, value);
 					// sorts max by lowest to smallest
 					Collections.sort(max);
@@ -110,9 +93,9 @@ public class DayOne_PartTwo {
 		
 		for (int k : max)
 			total += k;
-		
+		// vals should be 
+		// 68177, 68218, 68442
+		// total should be 204837
 		System.out.println(total);
 	}
-	
-
 }
