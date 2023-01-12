@@ -14,7 +14,8 @@ public class DaySix {
 		File inputPath = new File("%directory%");
 		String line = "";
 		List<Character> marker = new LinkedList<>();
-		int j = 0;
+		int x = 0;
+		int flag = 0;
 		try {
 			Scanner scanner = new Scanner(inputPath);
 			while (scanner.hasNextLine()) {
@@ -23,43 +24,51 @@ public class DaySix {
 			
 			// read through char by char
 			for (int i = 0; i < line.length(); i++) {
-				
+				flag = 0;
 				// if j is divisible by 4, reset marker count?
-				if (j == 0) {
+				if (x == 0) {
 					marker.add(line.charAt(i));
-					j++;
+					x++;
 					continue;
 				}
 				else if (marker.size() == 4) {
 					
 					// save last 4 characters and determine if they are all unique
-					if (
-							marker.get(0) == marker.get(1) ||
-							marker.get(0) == marker.get(2) ||
-							marker.get(0) == marker.get(3) ||
-							marker.get(1) == marker.get(2) ||
-							marker.get(1) == marker.get(3) ||
-							marker.get(2) == marker.get(3)					
-
-							) 
-					{}
-					else {
+					// nested for loop to check all characters one by one
+					for (int j = 0; j < marker.size(); j++) {
+						
+						if (flag == 1)
+							break;
+							
+						System.out.println("current string: " + marker);
+						System.out.println("testing char <" + marker.get(j) + "> against all other chars");
+						
+						for (int k = 0; k < marker.size(); k++) {
+							
+							//System.out.println("testing char <" + marker.get(j) + "> with char [" + marker.get(k) + "]");
+							if (marker.get(j) == marker.get(k) && (j != k)) {
+								flag = 1;
+								System.out.println(marker + " is not a unique string");
+								break;
+							}
+						}
+					}
+					if (flag == 0) {
 						// char 1760
 						System.out.println("index " + i + " is the length and string is " + marker);
 						System.exit(0);
 					}
 					marker.remove(0);
-
-					j = 0;
+					x = 0;
 				}
 				
 				if (marker.size() != 4) {
 					marker.add(line.charAt(i));
-					j++;
+					x++;
 				}
 				else {
 					marker.add(line.charAt(i));
-					j++;
+					x++;
 					marker.remove(0);
 				}
 			}
